@@ -262,14 +262,11 @@ jobs:
           path: build/packages
           key: "cached_packages_${{ github.run_id }}"
 
-      - name: place stack
-        run: cp build/packages/.aoc-stack-test.yml ./.aoc-stack.yml
-
       - name: upload to s3 in the testing stack 
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: release
-          opts: "-t=S3Release -s=TEST"
+          opts: "-t=S3Release -s=build/packages/.aoc-stack-test.yml"
 
       - name: Login Dockerhub
         uses: azure/docker-login@v1
@@ -308,7 +305,7 @@ jobs:
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: integ-test
-          opts: "-t=EC2Test"
+          opts: "-t=EC2Test -s=build/packages/.aoc-stack-test.yml"
 
   release-candidate:
     runs-on: ubuntu-latest
@@ -341,5 +338,5 @@ jobs:
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: candidate
-          opts: "-t=UploadCandidate"
+          opts: "-t=UploadCandidate -s=build/packages/.aoc-stack-test.yml"
 

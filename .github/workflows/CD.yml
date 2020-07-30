@@ -33,14 +33,11 @@ jobs:
         id: get_version
         run: echo ::set-output name=version::$(echo $GITHUB_REF | cut -d / -f 3)
 
-      - name: place stack
-        run: cp .aoc-stack-test.yml .aoc-stack.yml
-
       - name: download packages as release candidate from s3
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: candidate
-          opts: "-t=DownloadCandidate -p=${{ steps.get_version.outputs.version }} -g=${{ github.sha }}"
+          opts: "-t=DownloadCandidate -s=.aoc-stack-test.yml -p=${{ steps.get_version.outputs.version }} -g=${{ github.sha }}"
 
       - name: cp stack into packages
         run: |
@@ -74,15 +71,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
           aws-region: us-west-2
 
-      - name: place stack
-        run: cp build/packages/.aoc-stack-release.yml .aoc-stack.yml
-
       - name: Release to S3
         id: release-to-s3
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: release
-          opts: "-t=S3Release -s=RELEASE" 
+          opts: "-t=S3Release -s=build/packages/.aoc-stack-release.yml" 
 
   release-to-dockerhub:
     runs-on: ubuntu-latest
