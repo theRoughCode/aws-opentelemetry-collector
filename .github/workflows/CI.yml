@@ -230,6 +230,14 @@ jobs:
           Version="`cat VERSION`-$GITHUB_RUN_ID"
           echo $Version > build/packages/VERSION
 
+      - name: Checkout aws-opentelemetry-collector
+        uses: actions/checkout@v2
+
+      - name: prepare CI&CD stack
+        run: |
+          cp .aoc-stack-test.yml build/packages/
+          cp .aoc-stack-release.yml build/packages/
+
       - name: Cache the packages
         uses: actions/cache@v2
         with:
@@ -253,6 +261,9 @@ jobs:
         with:
           path: build/packages
           key: "cached_packages_${{ github.run_id }}"
+
+      - name: place stack
+        run: cp build/packages/.aoc-stack-test.yml ./.aoc-stack.yml
 
       - name: upload to s3 in the testing stack 
         uses: wyTrivail/aocintegtest@master
@@ -290,8 +301,8 @@ jobs:
           path: build/packages
           key: "cached_packages_${{ github.run_id }}"
 
-      - name: Configure SSH Key
-        run: echo "${{ secrets.INTEG_TEST_SSH_KEY }}" > build/packages/sshkey.pem
+      - name: place stack
+        run: cp build/packages/.aoc-stack-test.yml ./.aoc-stack.yml
 
       - name: perform integration test on EC2
         uses: wyTrivail/aocintegtest@master
@@ -322,6 +333,9 @@ jobs:
           Version=`cat build/packages/VERSION | awk -F "-" '{print $1}'`
           echo $Version > build/packages/VERSION
           echo $GITHUB_SHA > build/packages/GITHUB_SHA
+
+      - name: place stack
+        run: cp build/packages/.aoc-stack-test.yml ./aoc-stack.yml
 
       - name: upload packages as release candidate on s3
         uses: wyTrivail/aocintegtest@master

@@ -1,0 +1,5 @@
+---
+testingRegion: "us-west-2"
+s3ReleaseCandidateBucketName: "aoc-release-candidate-release"
+s3BucketName: "aws-opentelemetry-collector-release"
+sshKeyS3BucketName: "aoc-ssh-key-release"

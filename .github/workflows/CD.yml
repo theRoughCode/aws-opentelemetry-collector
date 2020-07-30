@@ -16,6 +16,9 @@ jobs:
   release-checking:
     runs-on: ubuntu-latest
     steps: 
+      - name: Checkout aws-opentelemetry-collector
+        uses: actions/checkout@v2
+
       - name: Checking if the related commit has passed the Soaking test
         run: echo "Checking Soaking test"
 
@@ -30,11 +33,19 @@ jobs:
         id: get_version
         run: echo ::set-output name=version::$(echo $GITHUB_REF | cut -d / -f 3)
 
+      - name: place stack
+        run: cp .aoc-stack-test.yml .aoc-stack.yml
+
       - name: download packages as release candidate from s3
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: candidate
           opts: "-t=DownloadCandidate -p=${{ steps.get_version.outputs.version }} -g=${{ github.sha }}"
+
+      - name: cp stack into packages
+        run: |
+          cp .aoc-stack-test.yml build/packages/
+          cp .aoc-stack-release.yml build/packages/      
 
       - run: ls -R      
 
@@ -62,6 +73,9 @@ jobs:
           aws-access-key-id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
           aws-region: us-west-2
+
+      - name: place stack
+        run: cp build/packages/.aoc-stack-release.yml .aoc-stack.yml
 
       - name: Release to S3
         id: release-to-s3
