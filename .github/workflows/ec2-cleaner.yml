@@ -26,5 +26,5 @@ jobs:
       uses: wyTrivail/aocintegtest@master
       with:
         running_type: integ-test
-        opts: "-t=EC2Clean"
+        opts: "-t=EC2Clean -s=.aoc-stack-test.yml"
  
