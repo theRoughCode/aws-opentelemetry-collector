@@ -6,7 +6,7 @@
 
 ### Overview
 
-AWS Observability Collector is a certified Amazon distribution of OpenTelemetry Collectors. It will fully support AWS CloudWatch Metrics, Traces and Logs with correlations and export your data from AWS to the other monitoring parterns backend services.
+AWS Observability Collector is a certified Amazon distribution of OpenTelemetry Collector. It will fully support AWS CloudWatch Metrics, Traces and Logs with correlations and export your data from AWS to the other monitoring parterns backend services.
 
 ### Getting Help
 
@@ -42,14 +42,14 @@ Use the following community resources for getting help with AWS Observability Co
 
 aws-observability-collector is based on open-telemetry-collector. Here is the benchmark of each plugins running on AOC.
 
-Test Component |	Receiver |	Exporter |	Max CPU Utilised |	Max Memory Utilised
----------------|-----------|-----------|-------------------|---------------------
-OpenCensus|	opencensus	| opencensus |	34.4 |	45
-SAPM |	SAPM |	SAPM |	20.7 |	48
-AwsXray |	OTLP |	AWSXray |	41.9 |	48
-JaegerGRPC |	jaeger |	jaeger |	25.7 |	33
-OTLP |	OTLP |	OTLP |	17.2 |	33
-Zipkin |	Zipkin |	Zipkin |	45 |	33
+Test Component | TPS |	Receiver |	Exporter |	Max CPU Utilised |	Max Memory Utilised
+---------------|-----|-----------|-----------|-------------------|---------------------
+OpenCensus|10k/TPS|	opencensus	| opencensus |	34.4 |	45
+SAPM |10k/TPS|	SAPM |	SAPM |	20.7 |	48
+AwsXray |10k/TPS|	OTLP |	AWSXray |	41.9 |	48
+JaegerGRPC |10k/TPS|	jaeger |	jaeger |	25.7 |	33
+OTLP |10k/TPS|OTLP |	OTLP |	17.2 |	33
+Zipkin |10k/TPS|	Zipkin |	Zipkin |	45 |	33
 
 
 ### License

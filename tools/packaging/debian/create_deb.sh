@@ -4,13 +4,15 @@ echo "Creating deb file for Debian Linux ${ARCH}"
 echo "****************************************"
 
 BUILD_ROOT="`pwd`/build/linux/debian"
-VERSION=`cat VERSION`
+
+# remove "v" since deb only allow version name with digits.
+VERSION=`cat VERSION | sed 's/v//g'`
 DEB_NAME=aws-opentelemetry-collector
 AOC_ROOT=${BUILD_ROOT}
 
 echo "BASE_ROOT: ${BUILD_ROOT}    agent_version: ${VERSION} AGENT_BIN_DIR_DEB: ${AOC_ROOT}"
 
-echo "Creating debbuild workspace"
+echo "Creating deb build workspace"
 mkdir -p ${AOC_ROOT}
 
 echo "Creating debian folders"
@@ -58,6 +60,7 @@ ln -f -s /opt/aws/aws-opentelemetry-collector/var ${AOC_ROOT}/var/run/amazon/aws
 #cp ${BRAZIL_BUILD_ROOT}/Tools/src/LICENSE ${BUILD_ROOT}/bin/debian_${ARCH}/debian/usr/share/doc/aws-opentelemetry-collector/copyright
 cp tools/packaging/debian/conffiles ${AOC_ROOT}/
 cp tools/packaging/debian/preinst ${AOC_ROOT}/
+cp tools/packaging/debian/postinst ${AOC_ROOT}/
 cp tools/packaging/debian/prerm ${AOC_ROOT}/
 cp tools/packaging/debian/debian-binary ${AOC_ROOT}/
 
@@ -79,7 +82,7 @@ cd ${AOC_ROOT}/..; find ./debian -type d | xargs chmod 755; cd ~-
 
 # the below permissioning is required by debian
 cd ${AOC_ROOT}; tar czf data.tar.gz opt etc usr var --owner=0 --group=0 ; cd ~-
-cd ${AOC_ROOT}; tar czf control.tar.gz control conffiles preinst prerm --owner=0 --group=0 ; cd ~-
+cd ${AOC_ROOT}; tar czf control.tar.gz control conffiles preinst prerm postinst --owner=0 --group=0 ; cd ~-
 
 echo "Creating the debian package"
 echo "Constructing the deb package"
@@ -90,7 +93,7 @@ ar r ${AOC_ROOT}/bin/aws-opentelemetry-collector-${ARCH}-${AGENT_VERSION}-1.deb 
 
 echo "Copy debian file to ${DEST}"
 mkdir -p ${DEST}
-mv ${AOC_ROOT}/bin/aws-opentelemetry-collector-${ARCH}-${AGENT_VERSION}-1.deb ${DEST}/aws-opentelemetry-collector-${ARCH}.deb
+mv ${AOC_ROOT}/bin/aws-opentelemetry-collector-${ARCH}-${AGENT_VERSION}-1.deb ${DEST}/aws-opentelemetry-collector.deb
 
 echo "remove working directory"
 rm -rf ${AOC_ROOT}

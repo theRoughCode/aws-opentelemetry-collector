@@ -25,6 +25,6 @@ jobs:
     - name: Clean old ec2 instances
       uses: wyTrivail/aocintegtest@master
       with:
-        running_type: integ-test
-        opts: "-t=EC2Clean"
+        running_type: clean
+        opts: "-t=EC2Clean -s=.aoc-stack-test.yml"
  

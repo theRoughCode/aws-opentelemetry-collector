@@ -16,6 +16,9 @@ jobs:
   release-checking:
     runs-on: ubuntu-latest
     steps: 
+      - name: Checkout aws-opentelemetry-collector
+        uses: actions/checkout@v2
+
       - name: Checking if the related commit has passed the Soaking test
         run: echo "Checking Soaking test"
 
@@ -34,7 +37,12 @@ jobs:
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: candidate
-          opts: "-t=DownloadCandidate -p=${{ steps.get_version.outputs.version }} -g=${{ github.sha }}"
+          opts: "-t=DownloadCandidate -s=.aoc-stack-test.yml -p=${{ steps.get_version.outputs.version }} -g=${{ github.sha }}"
+
+      - name: cp stack into packages
+        run: |
+          cp .aoc-stack-test.yml build/packages/
+          cp .aoc-stack-release.yml build/packages/      
 
       - run: ls -R      
 
@@ -68,7 +76,7 @@ jobs:
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: release
-          opts: "-t=S3Release -s=RELEASE" 
+          opts: "-t=S3Release -s=build/packages/.aoc-stack-release.yml" 
 
   release-to-dockerhub:
     runs-on: ubuntu-latest

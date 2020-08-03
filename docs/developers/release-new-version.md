@@ -12,11 +12,13 @@ Fork the repo into your own repo
 run below command to bump version and generate release note, this command will also create a git commit for the generated files including version file and release note
 
 ```
-RELEASE_VERSION={{the version you want to release}} GITHUB_USER=mxiamxia GITHUB_TOKEN=e75***********fa3d0d ./tools/release/bump-version-and-create-release-note.sh
+export RELEASE_VERSION={{replace with the version you want to release}}
+export GITHUB_USER={{replace with the upstream username}}
+export GITHUB_TOKEN={{replace with the github token which has read permission to the upstream repo}}
+./tools/release/bump-version-and-create-release-note.sh
 ```
 
-After the script is done, push the commited change and create pull request to the master branch of the upstream repo
-
+After the script is done, push the commited change, create pull request to the master branch of the upstream repo, please don't forget to attach a "bumpversion" label to this pr.
 ### Step 2. Merge the pull request
 
 Please reach out to the approver of this repo to merge the pull request you just created in step1, after that a github workflow will be triggered to perform integ-test.
