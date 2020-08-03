@@ -4,7 +4,9 @@ echo "Creating deb file for Debian Linux ${ARCH}"
 echo "****************************************"
 
 BUILD_ROOT="`pwd`/build/linux/debian"
-VERSION=`cat VERSION`
+
+# remove "v" since deb only allow version name with digits.
+VERSION=`cat VERSION | sed 's/v//g'`
 DEB_NAME=aws-opentelemetry-collector
 AOC_ROOT=${BUILD_ROOT}
 
