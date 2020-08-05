@@ -20,7 +20,8 @@ Use the following community resources for getting help with AWS Observability Co
 ### Get Started
 
 #### AOC AWS Components
-* [Trace X-Ray Exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/master/exporter/awsxrayexporter)
+* [OpenTelemetry Collector-v0.7.0](https://github.com/open-telemetry/opentelemetry-collector/)
+* [Trace X-Ray Exporter-v0.7.0](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/master/exporter/awsxrayexporter)
 * Metrics EMF Exporter
 * More coming
 

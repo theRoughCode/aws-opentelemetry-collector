@@ -21,7 +21,7 @@ import (
 	"aws-observability.io/collector/tools/version"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
-	"go.opentelemetry.io/collector/config"
+	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/config/configmodels"
 	"go.opentelemetry.io/collector/service"
 	"go.opentelemetry.io/collector/service/builder"
@@ -42,7 +42,7 @@ func main() {
 	handleErr("Failed to build components", err)
 
 	// configuration factory
-	cfgFactory := func(otelViper *viper.Viper, f config.Factories) (*configmodels.Config, error) {
+	cfgFactory := func(otelViper *viper.Viper, f component.Factories) (*configmodels.Config, error) {
 		// use the default config
 		if len(builder.GetConfigFile()) == 0 {
 			handleErr("configuration file is not provided", nil)
