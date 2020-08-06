@@ -48,11 +48,22 @@ func Components() (component.Factories, error) {
 		&fileexporter.Factory{},
 		otlpexporter.NewFactory(),
 	}
-
 	factories.Exporters, err = component.MakeExporterFactoryMap(exporters...)
 	if err != nil {
 		errs = append(errs, err)
 	}
+
+	//add custom receivers
+	//receivers := []component.ReceiverFactoryBase{
+	//	awsstatsd.NewFactory(),
+	//}
+	//for _, exp := range factories.Receivers {
+	//	receivers = append(receivers, exp)
+	//}
+	//factories.Receivers, err = component.MakeReceiverFactoryMap(receivers...)
+	//if err != nil {
+	//	errs = append(errs, err)
+	//}
 
 	return factories, componenterror.CombineErrors(errs)
 }
