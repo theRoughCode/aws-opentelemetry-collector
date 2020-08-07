@@ -31,7 +31,7 @@ cp -fa * ${RPM_BUILD_ROOT}
 /opt/aws/aws-opentelemetry-collector/bin/VERSION
 /opt/aws/aws-opentelemetry-collector/LICENSE
 /opt/aws/aws-opentelemetry-collector/RELEASE_NOTE
-/opt/aws/aws-opentelemetry-collector/etc/config.yaml
+/opt/aws/aws-opentelemetry-collector/var/.config.yaml
 /opt/aws/aws-opentelemetry-collector/etc/.env
 
 /etc/init/aws-opentelemetry-collector.conf

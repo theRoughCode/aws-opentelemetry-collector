@@ -39,7 +39,7 @@ cp build/linux/aoc_linux_${ARCH} ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector
 # ctl
 cp tools/ctl/linux/aws-opentelemetry-collector-ctl ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/bin/
 # default config
-cp config.yaml ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/etc
+cp config.yaml ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/var/.config.yaml
 # .env
 cp .env ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/etc
 # service config
