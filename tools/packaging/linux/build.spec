@@ -25,6 +25,7 @@ cp -fa * ${RPM_BUILD_ROOT}
 %dir /opt/aws/aws-opentelemetry-collector/etc
 %dir %attr(-, aoc, aoc) /opt/aws/aws-opentelemetry-collector/logs
 %dir %attr(-, aoc, aoc) /opt/aws/aws-opentelemetry-collector/var
+%dir %attr(-, aoc, aoc) /opt/aws/aws-opentelemetry-collector/etc
 
 /opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector
 /opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector-ctl

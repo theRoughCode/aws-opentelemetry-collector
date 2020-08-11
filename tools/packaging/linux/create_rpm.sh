@@ -49,7 +49,7 @@ cp tools/packaging/linux/aws-opentelemetry-collector.conf ${AOC_ROOT}/etc/init/
 echo "assign permission to the files"
 chmod ug+rx ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector
 chmod ug+rx ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector-ctl
-chmod ug+rx ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/etc/config.yaml
+chmod ug+rx ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/var/.config.yaml
 chmod ug+rx ${AOC_ROOT}/opt/aws/aws-opentelemetry-collector/etc/.env
 
 echo "create symlinks"
