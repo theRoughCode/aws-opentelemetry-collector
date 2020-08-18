@@ -29,7 +29,7 @@ Use the following community resources for getting help with AWS Observability Co
 * [Run it in Docker](docs/developers/docker-demo.md)
 * [Run it on AWS Linux EC2](docs/developers/linux-rpm-demo.md)
 * [Run it on AWS Windows EC2](docs/developers/windows-other-demo.md)
-* Run it on AWS Debian
+* [Run it on AWS Debian](docs/developers/debian-deb-demo.md)
 
 #### Build Your Own Executables
 * [Build RPM/Deb/MSI](docs/developers/build-aoc.md)
