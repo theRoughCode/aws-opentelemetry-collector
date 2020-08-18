@@ -1,5 +1,3 @@
-### Run AOC on Debian and Windows hosts,
-
 ### Run AOC on AWS Windows Ec2 Host
 
 To run AOC on AWS windows ec2 host, you can choose to install AOC MSI on your host by the following steps.
