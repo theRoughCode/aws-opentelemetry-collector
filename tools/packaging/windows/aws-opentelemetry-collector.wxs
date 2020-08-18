@@ -41,7 +41,7 @@ Platform="x64"
 
     <Directory Id='CommonAppDataFolder' Name='AppDataFolder'>
     <Directory Id='AppDataFolderAmazon' Name='Amazon'>
-    <Directory Id='Config' Name='AOCAgent'>
+    <Directory Id='Config' Name='AwsOpentelemetryCollector'>
     <Directory Id="Configs" Name="Configs"/>
     <Directory Id='Logs' Name='Logs'/>
     </Directory>
