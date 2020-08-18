@@ -66,8 +66,8 @@ $UsageString = @"
 "@
 
 $AOCServiceName = 'AOCAgent'
-$AOCServiceDisplayName = 'Aoc Agent'
-$AOCDirectory = 'Amazon\AOCAgent'
+$AOCServiceDisplayName = 'Aws opentelemetry Collector'
+$AOCDirectory = 'Amazon\AwsOpentelemetryCollector'
 
 $AOCProgramFiles = "${Env:ProgramFiles}\${AOCDirectory}"
 if ($Env:ProgramData) {
