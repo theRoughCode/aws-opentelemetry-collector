@@ -85,7 +85,7 @@ $ProgramFilesYAML="${Env:ProgramFiles}\${AOCDirectory}\config.yaml"
 $YAML="${AOCProgramData}\config.yaml"
 
 Function AOCStart() {
-    if($ConfigLocation){
+    if($ConfigLocation  -and $ConfigLocation -ne 'default'){
         Copy-Item "${ConfigLocation}" -Destination ${ProgramFilesYAML}
     }
 
