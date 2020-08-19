@@ -80,13 +80,20 @@ if ($Env:ProgramData) {
 $AOCLogDirectory = "${AOCProgramData}\Logs"
 $VersionFile ="${AOCProgramFiles}\VERSION"
 
-# The windows service registration assumes exactly this .toml file path and name
+# The windows service registration assumes exactly this .yaml file path and name
+$ProgramFilesYAML="${Env:ProgramFiles}\${AOCDirectory}\config.yaml" 
 $YAML="${AOCProgramData}\config.yaml"
 
 Function AOCStart() {
-    if (!(Test-Path -LiteralPath "${YAML}")) {
-        Write-Output "AOC-agent is not configured. Applying default configuration before starting it."
+    if($ConfigLocation){
+        Copy-Item "${ConfigLocation}" -Destination ${ProgramFilesYAML}
     }
+
+    if (!(Test-Path -LiteralPath "${ProgramFilesYAML}")) {
+        Write-Output "Configuration not specified. Applying default configuration before starting it."
+        Copy-Item "${YAML}" -Destination ${ProgramFilesYAML}  
+    } 
+
     $svc = Get-Service -Name "${AOCServiceName}" -ErrorAction SilentlyContinue
     if (!$svc) {
         New-Service -Name "${AOCServiceName}" -DisplayName "${AOCServiceDisplayName}" -Description "${AOCServiceDisplayName}" -DependsOn LanmanServer -BinaryPathName "`"${AOCProgramFiles}\start-amazon-cloudwatch-agent.exe`"" | Out-Null
