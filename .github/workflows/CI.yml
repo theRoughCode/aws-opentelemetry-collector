@@ -281,7 +281,7 @@ jobs:
   e2etest-ec2:
     strategy:
       matrix:
-        ami: [AmazonLinux, Ubuntu, A1AmazonLinux]
+        ami: [AmazonLinux, Ubuntu]
 
     runs-on: ubuntu-latest
     needs: [e2etest-release]
@@ -306,7 +306,38 @@ jobs:
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: integ-test
-          opts: "-t=EC2Test -s=build/packages/.aoc-stack-test.yml -a=${{ matrix.ami }}"
+          opts: "-t=EC2_TEST -s=build/packages/.aoc-stack-test.yml -a=${{ matrix.ami }}"
+
+  e2etest-ecs:
+    strategy:
+      matrix:
+        cluster_type: [EC2, FARGATE]
+
+    runs-on: ubuntu-latest
+    needs: [e2etest-release]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
+          aws-region: us-west-2
+
+      - name: restore cached rpms
+        uses: actions/cache@v2
+        with:
+          path: build/packages
+          key: "cached_packages_${{ github.run_id }}"
+
+      - name: place stack
+        run: cp build/packages/.aoc-stack-test.yml ./.aoc-stack.yml
+
+      - name: perform integration test on EC2
+        uses: wyTrivail/aocintegtest@master
+        with:
+          running_type: integ-test
+          opts: "-t=ECS_TEST -s=build/packages/.aoc-stack-test.yml -a=EcsOptimizedAMI -e=${{ matrix.cluster_type }}"
+
 
   release-candidate:
     runs-on: ubuntu-latest
