@@ -336,7 +336,7 @@ jobs:
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: integ-test
-          opts: "-t=ECS_TEST -s=build/packages/.aoc-stack-test.yml -a=EcsOptimizedAMI -e=${{ matrix.cluster_type }}"
+          opts: "-t=ECS_TEST -s=build/packages/.aoc-stack-test.yml -a=EcsOptimizedAMI -e ecsLaunchType=${{ matrix.cluster_type }}"
 
 
   release-candidate:
