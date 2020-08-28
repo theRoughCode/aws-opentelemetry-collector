@@ -1,4 +1,4 @@
-name: EC2 Cleaner
+name: Resources Cleaner
 
 on:
   schedule:
@@ -27,4 +27,10 @@ jobs:
       with:
         running_type: clean
         opts: "-t=EC2Clean -s=.aoc-stack-test.yml"
+
+    - name: Clean old ecs clusters
+      uses: wyTrivail/aocintegtest@master
+      with:
+        running_type: clean
+        opts: "-t=ECSClean -s=.aoc-stack-test.yml"
  
