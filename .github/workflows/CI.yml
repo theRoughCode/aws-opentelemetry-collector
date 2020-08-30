@@ -229,6 +229,7 @@ jobs:
           # build a version with github run id so that we can distingush each build for integ-test
           Version="`cat VERSION`-$GITHUB_RUN_ID"
           echo $Version > build/packages/VERSION
+          cat build/packages/VERSION
 
       - name: prepare CI&CD stack
         run: |
