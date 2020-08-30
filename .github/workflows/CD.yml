@@ -19,7 +19,7 @@ jobs:
       - name: Checkout aws-opentelemetry-collector
         uses: actions/checkout@v2
 
-      - name: Checking if the related commit has passed the Soaking test
+      - name: [todo] Checking if the related commit has passed the Soaking test
         run: echo "Checking Soaking test"
 
       - name: Configure AWS Credentials, TODO change to the release account credentials
