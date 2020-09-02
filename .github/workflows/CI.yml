@@ -182,7 +182,7 @@ jobs:
       - name: Extract the Image file
         run: |
           mkdir -p $PACKAGING_ROOT
-          docker save --output $PACKAGING_ROOT/awscollector.tar $IMAGE_NAME
+          docker save --output $PACKAGING_ROOT/awscollector.tar $ECR_IMAGE_NAME
 
       - name: Cache Image
         uses: actions/cache@v2
