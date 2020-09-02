@@ -13,8 +13,8 @@ on:
     branches: [ master ]
 
 env:
-  IMAGE_NAMESPACE: josephwy
-  IMAGE_NAME: awscollector
+  ECR_IMAGE_NAMESPACE: amazon-cloudwatch 
+  ECR_IMAGE_NAME: awscollector-test
   PACKAGING_ROOT: build/packages
 
 jobs:
@@ -266,18 +266,21 @@ jobs:
           running_type: release
           opts: "-t=S3Release -s=build/packages/.aoc-stack-test.yml"
 
-      - name: Login Dockerhub
-        uses: azure/docker-login@v1
-        with:
-          username: "${{ secrets.TEST_DOCKERHUB_USERNAME }}"
-          password: "${{ secrets.TEST_DOCKERHUB_PASSWORD }}"
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-      - name: upload to dockerhub
+      - name: upload to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: my-ecr-repo
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           TAG=`cat build/packages/VERSION`
           docker load < build/packages/awscollector.tar
-          docker tag $IMAGE_NAME $IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
-          docker push $IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
+          docker tag $ECR_IMAGE_NAME $ECR_IMAGE_NAMESPACE/$ECR_IMAGE_NAME:$TAG
+          docker push $ECR_IMAGE_NAMESPACE/$ECR_IMAGE_NAME:$TAG
+
 
   e2etest-ec2:
     strategy:
