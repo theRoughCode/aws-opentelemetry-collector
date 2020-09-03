@@ -12,6 +12,9 @@ on:
   pull_request:
     branches: [ master ]
 
+  issues:
+    types: [opened]    
+
 env:
   IMAGE_NAMESPACE: josephwy
   IMAGE_NAME: awscollector
