@@ -19,8 +19,3 @@ make docker-build
 make docker-push
 ```
 
-### Run Binary
-
-### Run RPM
-
-### RUN Container
