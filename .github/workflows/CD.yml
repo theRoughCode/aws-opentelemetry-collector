@@ -8,7 +8,7 @@ on:
 
 env:
   IMAGE_NAMESPACE: josephwy
-  IMAGE_NAME: awscollector
+  IMAGE_NAME: aws-observability-collector
   PACKAGE_CACHE_KEY: "cached_tested_packages_${{ github.run_id }}"
   S3_LINK_TABLE_CACHE_KEY: "cached_s3_link_table_${{ github.run_id }}"
 

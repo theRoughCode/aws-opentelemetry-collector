@@ -1,4 +1,4 @@
-Summary:    AWS Opentelemetry Collector
+Summary:    AWS Observability Collector
 Name:       %{RPM_NAME}
 Version:    %{VERSION}
 Release:    1
@@ -7,7 +7,7 @@ Group:      Applications/AWS
 Source0:    %{RPM_NAME}-%{VERSION}.tar.gz
 
 %description
-This package provides daemon of AWS Opentelemetry Collector
+This package provides daemon of AWS Observability Collector
 
 %prep
 %setup -q
@@ -19,34 +19,34 @@ cp -fa * ${RPM_BUILD_ROOT}
 
 %files
 %dir /opt/aws
-%dir /opt/aws/aws-opentelemetry-collector
-%dir /opt/aws/aws-opentelemetry-collector/bin
-%dir /opt/aws/aws-opentelemetry-collector/doc
-%dir /opt/aws/aws-opentelemetry-collector/etc
-%dir %attr(-, aoc, aoc) /opt/aws/aws-opentelemetry-collector/logs
-%dir %attr(-, aoc, aoc) /opt/aws/aws-opentelemetry-collector/var
-%dir %attr(-, aoc, aoc) /opt/aws/aws-opentelemetry-collector/etc
+%dir /opt/aws/aws-observability-collector
+%dir /opt/aws/aws-observability-collector/bin
+%dir /opt/aws/aws-observability-collector/doc
+%dir /opt/aws/aws-observability-collector/etc
+%dir %attr(-, aoc, aoc) /opt/aws/aws-observability-collector/logs
+%dir %attr(-, aoc, aoc) /opt/aws/aws-observability-collector/var
+%dir %attr(-, aoc, aoc) /opt/aws/aws-observability-collector/etc
 
-/opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector
-/opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector-ctl
-/opt/aws/aws-opentelemetry-collector/bin/VERSION
-/opt/aws/aws-opentelemetry-collector/LICENSE
-/opt/aws/aws-opentelemetry-collector/RELEASE_NOTE
-/opt/aws/aws-opentelemetry-collector/var/.config.yaml
-/opt/aws/aws-opentelemetry-collector/etc/.env
+/opt/aws/aws-observability-collector/bin/aws-observability-collector
+/opt/aws/aws-observability-collector/bin/aws-observability-collector-ctl
+/opt/aws/aws-observability-collector/bin/VERSION
+/opt/aws/aws-observability-collector/LICENSE
+/opt/aws/aws-observability-collector/RELEASE_NOTE
+/opt/aws/aws-observability-collector/var/.config.yaml
+/opt/aws/aws-observability-collector/etc/.env
 
-/etc/init/aws-opentelemetry-collector.conf
-/etc/systemd/system/aws-opentelemetry-collector.service
-/usr/bin/aws-opentelemetry-collector-ctl
-/etc/amazon/aws-opentelemetry-collector
-/var/log/amazon/aws-opentelemetry-collector
-/var/run/amazon/aws-opentelemetry-collector
+/etc/init/aws-observability-collector.conf
+/etc/systemd/system/aws-observability-collector.service
+/usr/bin/aws-observability-collector-ctl
+/etc/amazon/aws-observability-collector
+/var/log/amazon/aws-observability-collector
+/var/run/amazon/aws-observability-collector
 
 %pre
 # Stop the agent before upgrades.
 if [ $1 -ge 2 ]; then
-    if [ -x /opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector-ctl ]; then
-        /opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector-ctl -a stop
+    if [ -x /opt/aws/aws-observability-collector/bin/aws-observability-collector-ctl ]; then
+        /opt/aws/aws-observability-collector/bin/aws-observability-collector-ctl -a stop
     fi
 fi
 

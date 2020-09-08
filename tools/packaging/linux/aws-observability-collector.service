@@ -11,22 +11,22 @@
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-# Location: /etc/systemd/system/aws-opentelemetry-collector.service
-# systemctl enable aws-opentelemetry-collector
-# systemctl start aws-opentelemetry-collector
-# systemctl | grep aws-opentelemetry-collector
+# Location: /etc/systemd/system/aws-observability-collector.service
+# systemctl enable aws-observability-collector
+# systemctl start aws-observability-collector
+# systemctl | grep aws-observability-collector
 # https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
 [Unit]
-Description=AWS OpenTelemetry Collector
+Description=AWS Observability Collector
 After=network.target
 
 [Service]
 Type=simple
 User=aoc
 Group=aoc
-EnvironmentFile=/opt/aws/aws-opentelemetry-collector/etc/.env
-ExecStart=/opt/aws/aws-opentelemetry-collector/bin/aws-opentelemetry-collector $config
+EnvironmentFile=/opt/aws/aws-observability-collector/etc/.env
+ExecStart=/opt/aws/aws-observability-collector/bin/aws-observability-collector $config
 KillMode=process
 Restart=on-failure
 RestartSec=60s

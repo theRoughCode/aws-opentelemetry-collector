@@ -27,8 +27,8 @@ import (
 )
 
 var (
-	winLogfilePath   = "C:\\ProgramData\\Amazon\\AwsOpentelemetryCollector\\Logs\\aws-opentelemetry-collector.log"
-	linuxLogfilePath = "/opt/aws/aws-opentelemetry-collector/logs/aws-opentelemetry-collector.log"
+	winLogfilePath   = "C:\\ProgramData\\Amazon\\AwsOpentelemetryCollector\\Logs\\aws-observability-collector.log"
+	linuxLogfilePath = "/opt/aws/aws-observability-collector/logs/aws-observability-collector.log"
 )
 var logfile = getLogFilePath()
 

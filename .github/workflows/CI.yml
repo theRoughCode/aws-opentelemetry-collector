@@ -17,7 +17,7 @@ on:
 
 env:
   IMAGE_NAMESPACE: josephwy
-  IMAGE_NAME: awscollector
+  IMAGE_NAME: aws-observability-collector
   PACKAGING_ROOT: build/packages
 
 jobs:
