@@ -1,20 +1,18 @@
-### Run AOC Beta on AWS EC2 Linux
+### Run AOC Beta on AWS EC2 Debian(ubuntu)
 
-To run AOC on AWS EC2 Linux host, you can choose to install AOC RPM on your host by the following steps.
+To run AOC on AWS EC2 debian host, you can choose to install AOC Debian on your host by the following steps.
 
 **Steps,**
 
-1. Login on AWS Linux EC2 host and download aws-observability-collector RPM with the following command.
+1. Login on AWS Debian host and download aws-observability-collector DEB with the following command.
 ```
-wget https://aws-observability-collector-release.s3.amazonaws.com/amazon_linux/amd64/v0.1.8/aws-observability-collector.rpm
+wget https://aws-observability-collector-test.s3.amazonaws.com/debian/amd64/latest/aws-observability-collector.deb
 ```
-2. Install aws-observability-collector RPM by the following command on the host
+2. Install aws-observability-collector DEB by the following command on the host
 ```
-sudo rpm -Uvh  ./aws-observability-collector.rpm
+sudo dpkg -i -E ./aws-observability-collector.deb
 ```
-3. Once RPM is installed, it will create AOC in directory /opt/aws/aws-observability-collector/
-
-[Image: image.png]. 
+3. Once DEB is installed, it will create AOC in directory /opt/aws/aws-observability-collector/
 
 4. We provided a control script to manage AOC. Customer can use it to Start, Stop and Check Status of AOC.
 

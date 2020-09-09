@@ -32,42 +32,29 @@ $ErrorActionPreference = "Stop"
 $UsageString = @"
 
 
-        usage: aws-opentelemetry-collector-ctl.ps1 -a stop|start|status
+        usage: aws-observability-collector-ctl.ps1 -a stop|start|status
 
         e.g.
-        1. apply a SSM parameter store config on EC2 instance and restart the agent afterwards:
-            aws-opentelemetry-collector-ctl.ps1 -a fetch-config -m ec2 -c ssm:AmazonCloudWatch-Config.json -s
-        2. append a local json config file on onPremise host and restart the agent afterwards:
-            aws-opentelemetry-collector-ctl.ps1 -a append-config -m onPremise -c file:c:\config.json -s
+        1. start collector with a custom .yaml config file:
+            aws-observability-collector-ctl.ps1 -c /tmp/config.yaml -a start
+        2. stop the running collector:
+            aws-observability-collector-ctl.ps1 -a stop
         3. query agent status:
-            aws-opentelemetry-collector-ctl.ps1 -a status
+            aws-observability-collector-ctl.ps1 -a status
 
         -a: action
             stop:                                   stop the agent process.
             start:                                  start the agent process.
             status:                                 get the status of the agent process.
-            fetch-config:                           use this json config as the agent's only configuration.
-            append-config:                          append json config with the existing json configs if any.
-            remove-config:                          remove json config based on the location (ssm parameter store name, file name)
-
-        -m: mode
-            ec2:                                    indicate this is on ec2 host.
-            onPremise:                              indicate this is on onPremise host.
-            auto:                                   use ec2 metadata to determine the environment, may not be accurate if ec2 metadata is not available for some reason on EC2.
 
         -c: configuration
-            default:                                default configuration for quick trial.
-            ssm:<parameter-store-name>:             ssm parameter store name
             file:<file-path>:                       file path on the host
-
-        -s: optionally restart after configuring the agent configuration
-            this parameter is used for 'fetch-config', 'append-config', 'remove-config' action only.
 
 "@
 
-$AOCServiceName = 'AOCAgent'
-$AOCServiceDisplayName = 'Aoc Agent'
-$AOCDirectory = 'Amazon\AOCAgent'
+$AOCServiceName = 'AWSObservabilityCollector'
+$AOCServiceDisplayName = 'AWS Observability Collector'
+$AOCDirectory = 'Amazon\AWSObservabilityCollector'
 
 $AOCProgramFiles = "${Env:ProgramFiles}\${AOCDirectory}"
 if ($Env:ProgramData) {
@@ -80,16 +67,23 @@ if ($Env:ProgramData) {
 $AOCLogDirectory = "${AOCProgramData}\Logs"
 $VersionFile ="${AOCProgramFiles}\VERSION"
 
-# The windows service registration assumes exactly this .toml file path and name
+# The windows service registration assumes exactly this .yaml file path and name
+$ProgramFilesYAML="${Env:ProgramFiles}\${AOCDirectory}\config.yaml" 
 $YAML="${AOCProgramData}\config.yaml"
 
 Function AOCStart() {
-    if (!(Test-Path -LiteralPath "${YAML}")) {
-        Write-Output "AOC-agent is not configured. Applying default configuration before starting it."
+    if($ConfigLocation  -and $ConfigLocation -ne 'default'){
+        Copy-Item "${ConfigLocation}" -Destination ${ProgramFilesYAML}
     }
+
+    if (!(Test-Path -LiteralPath "${ProgramFilesYAML}")) {
+        Write-Output "Configuration not specified. Applying default configuration before starting it."
+        Copy-Item "${YAML}" -Destination ${ProgramFilesYAML}  
+    } 
+
     $svc = Get-Service -Name "${AOCServiceName}" -ErrorAction SilentlyContinue
     if (!$svc) {
-        New-Service -Name "${AOCServiceName}" -DisplayName "${AOCServiceDisplayName}" -Description "${AOCServiceDisplayName}" -DependsOn LanmanServer -BinaryPathName "`"${AOCProgramFiles}\start-amazon-cloudwatch-agent.exe`"" | Out-Null
+        New-Service -Name "${AOCServiceName}" -DisplayName "${AOCServiceDisplayName}" -Description "${AOCServiceDisplayName}" -DependsOn LanmanServer -BinaryPathName "`"${AOCProgramFiles}\aws-observability-collector.exe`"" | Out-Null
         # object returned by New-Service gives errors so retrieve it again
         $svc = Get-Service -Name "${AOCServiceName}"
         # Configure the service to restart on crashes. It's unclear how to do this through WMI or CIM interface so using sc.exe
