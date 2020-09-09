@@ -38,6 +38,7 @@ This table represents the supported components of AWS observability collector in
 * [Metrics EMF Exporter](https://github.com/shaochengwang/opentelemetry-collector-contrib/blob/emf_exporter_pr/exporter/awsemfexporter/README.md)
 * More coming
 
+### Getting Started
 #### Build Your Own Artifacts
 Use the following instruction to build your own AOC artifacts.
 * [Build Docker Image](docs/developers/build-docker.md)
