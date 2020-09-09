@@ -40,9 +40,11 @@ The easiest way to deploy AOC on Amazon ECS is to run it as a sidecar, defining 
 **Configure The Task Definition**  
 The following two examples are provided to run AWS-Observability-Collector as sidecar to send application metrics and traces on Amazon ECS.  
 
-Notice that in the task definition templates we provided, you have to fill ```{{aocImage}}``` with the aoc docker image you created. Replace ```{{region}}``` with the region your want to send the data to. Fill ```{{ecsTaskRoleArn}}``` and ```{{ecsExecutionRoleArn}}``` with the IAM role you created above.
+**ECS Fargate**  
+Notice that in the task definition templates we provided, you have to fill ```{{aocImage}}``` with the aoc docker image you created. Replace ```{{region}}``` with the region your want to send the data to. Fill ```{{ecsTaskRoleArn}}``` and ```{{ecsExecutionRoleArn}}``` with the IAM role(```ECS-AWSObservability```) you created above.
 You can find ECS Fargate AOC [Installing template](https://github.com/wyTrivail/aocintegtest/blob/master/src/main/resources/templates/ecs/aoc-sidecar-fargate.mustache).
 
+**ECS EC2**  
 Another example is installing AOC on ECS EC2 instance as sidecar to send telemetry data.
 You can find ECS EC2 AOC [Installing template](https://github.com/wyTrivail/aocintegtest/blob/master/src/main/resources/templates/ecs/aoc-sidecar-fargate.mustache).
 

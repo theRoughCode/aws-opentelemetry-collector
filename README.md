@@ -38,17 +38,16 @@ This table represents the supported components of AWS observability collector in
 * [Metrics EMF Exporter](https://github.com/shaochengwang/opentelemetry-collector-contrib/blob/emf_exporter_pr/exporter/awsemfexporter/README.md)
 * More coming
 
+#### Build Your Own Executables
+* [Build Docker Image](docs/developers/build-docker.md)
+* [Build RPM/Deb/MSI](docs/developers/build-aoc.md)
+
 #### Try out AOC Beta
 * [Run it with Docker](docs/developers/docker-demo.md)
 * [Run it with ECS](docs/developers/emf-demo.md)
 * [Run it on AWS Linux EC2](docs/developers/linux-rpm-demo.md)
 * [Run it on AWS Windows EC2](docs/developers/windows-other-demo.md)
 * [Run it on AWS Debian](docs/developers/debian-deb-demo.md)
-
-#### Build Your Own Executables
-* [Build RPM/Deb/MSI](docs/developers/build-aoc.md)
-* [Build Docker Image](docs/developers/build-aoc.md)
-* more
 
 ### Release Process
 * [Release new version](docs/developers/release-new-version.md)
