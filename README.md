@@ -60,8 +60,5 @@ This table shows the performance of AWSXray  exporter against 1kData/sec,5kData/
 | Trace10kSPS/AwsXray | PASS   | 15s      |     43.8 |     45.3 |          37 |          43 |     132500 |         132500 |
 
 
-
-
-
 ### License
 aws-observability-collector is under Apache 2.0 license.
