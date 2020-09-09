@@ -38,16 +38,18 @@ This table represents the supported components of AWS observability collector in
 * [Metrics EMF Exporter](https://github.com/shaochengwang/opentelemetry-collector-contrib/blob/emf_exporter_pr/exporter/awsemfexporter/README.md)
 * More coming
 
-#### Build Your Own Executables
+#### Build Your Own Artifacts
+Use the following instruction to build your own AOC artifacts.
 * [Build Docker Image](docs/developers/build-docker.md)
 * [Build RPM/Deb/MSI](docs/developers/build-aoc.md)
 
 #### Try out AOC Beta
+AOC supports all AWS computing platforms and docker/kubernetes. We provided some examples on how to run AOC to send telemetry data.
 * [Run it with Docker](docs/developers/docker-demo.md)
-* [Run it with ECS](docs/developers/emf-demo.md)
+* [Run it with ECS/EKS](docs/developers/emf-demo.md)
 * [Run it on AWS Linux EC2](docs/developers/linux-rpm-demo.md)
 * [Run it on AWS Windows EC2](docs/developers/windows-other-demo.md)
-* [Run it on AWS Debian](docs/developers/debian-deb-demo.md)
+* [Run it on AWS Debian EC2](docs/developers/debian-deb-demo.md)
 
 ### Release Process
 * [Release new version](docs/developers/release-new-version.md)
