@@ -6,8 +6,7 @@
 
 ### Overview
 
-AWS Observability Collector is a certified Amazon distribution of OpenTelemetry Collector. It will fully support AWS CloudWatch Metrics, Traces and Logs with correlations and export your data from AWS to the other monitoring parterns backend services.
-
+AWS Observability Collector(AOC) is a certified OpenTelemetry Collector and distributed by Amazon. It supports the selected components from OpenTelemetry community and fully compatible with AWS computing platforms including EC2, ECS and EKS. It will send telemetry data to AWS CloudWatch Metrics, Traces and Logs backends as well as the other backends we have claimed to support with verification. 
 ### Getting Help
 
 Use the following community resources for getting help with AWS Observability Collector. We use the GitHub issues for tracking bugs and feature requests.
@@ -17,16 +16,31 @@ Use the following community resources for getting help with AWS Observability Co
 * If you think you may have found a bug, open an [issue](https://github.com/mxiamxia/aws-opentelemetry-collector/issues/new).
 * For contributing guidelines refer [CONTRIBUTING.md](https://github.com/mxiamxia/aws-opentelemetry-collector/blob/master/CONTRIBUTING.md).
 
-### Get Started
+#### AOC Built-in Components (in 2020)
 
-#### AOC Components
+This table represents the supported components of AWS observability collector in 2020. The highlighted components below are developed by AWS in-house. The rest of components in the table are the essential default components  AOC will be supported.
+ 
+| Receiver             | Processor                     | Exporter           | Extensions             |
+|----------------------|-------------------------------|--------------------|------------------------|
+| prometheusreceiver   | attributesprocessor           | awsxrayexporter    | healthcheckextension   |
+| otlpreceiver         | resourceprocessor             | awsemfexporter     | pprofextension         |
+| statsdreceiver       | queuedprocessor               | prometheusexporter | zpagesextension        |
+| xrayreceiver.        | batchprocessor                | loggingexporter    |                        |
+| ecsmetadatareceiver  | memorylimite                  | otlpexporter       |                        |
+|                      | tailsamplingprocessor         |                    |                        |
+|                      | probabilisticsamplerprocessor |                    |                        |
+|                      | spanprocessor                 |                    |                        |
+|                      | filterprocessor               |                    |                        |
+
+#### AOC AWS Components
 * [OpenTelemetry Collector-v0.7.0](https://github.com/open-telemetry/opentelemetry-collector/)
 * [Trace X-Ray Exporter-v0.7.0](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/master/exporter/awsxrayexporter)
-* Metrics EMF Exporter
+* [Metrics EMF Exporter](https://github.com/shaochengwang/opentelemetry-collector-contrib/blob/emf_exporter_pr/exporter/awsemfexporter/README.md)
 * More coming
 
 #### Try out AOC Beta
-* [Run it in Docker](docs/developers/docker-demo.md)
+* [Run it with Docker](docs/developers/docker-demo.md)
+* [Run it with ECS](docs/developers/emf-demo.md)
 * [Run it on AWS Linux EC2](docs/developers/linux-rpm-demo.md)
 * [Run it on AWS Windows EC2](docs/developers/windows-other-demo.md)
 * [Run it on AWS Debian](docs/developers/debian-deb-demo.md)
