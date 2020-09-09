@@ -28,7 +28,7 @@ var (
 )
 
 func init() {
-	fmt.Printf("AWS OpenTelemetry Collector version: %v\n", Version)
+	fmt.Printf("AWS Observability Collector version: %v\n", Version)
 }
 
 // Info has properties about the build and runtime.
