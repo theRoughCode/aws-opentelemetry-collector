@@ -24,6 +24,8 @@ import (
 	"go.opentelemetry.io/collector/exporter/loggingexporter"
 	"go.opentelemetry.io/collector/exporter/otlpexporter"
 	"go.opentelemetry.io/collector/exporter/prometheusexporter"
+	"go.opentelemetry.io/collector/receiver/otlpreceiver"
+	"go.opentelemetry.io/collector/receiver/prometheusreceiver"
 	"go.opentelemetry.io/collector/service/defaultcomponents"
 )
 
@@ -33,6 +35,21 @@ func Components() (component.Factories, error) {
 	factories, err := defaultcomponents.Components()
 	if err != nil {
 		return component.Factories{}, err
+	}
+
+	// Reset the default receivers
+	for k := range factories.Receivers {
+		delete(factories.Receivers, k)
+	}
+
+	receivers := []component.ReceiverFactoryBase{
+		&prometheusreceiver.Factory{},
+		otlpreceiver.NewFactory(),
+	}
+
+	factories.Receivers, err = component.MakeReceiverFactoryMap(receivers...)
+	if err != nil {
+		errs = append(errs, err)
 	}
 
 	// Reset the default exporters
@@ -52,18 +69,6 @@ func Components() (component.Factories, error) {
 	if err != nil {
 		errs = append(errs, err)
 	}
-
-	//add custom receivers
-	//receivers := []component.ReceiverFactoryBase{
-	//	awsstatsd.NewFactory(),
-	//}
-	//for _, exp := range factories.Receivers {
-	//	receivers = append(receivers, exp)
-	//}
-	//factories.Receivers, err = component.MakeReceiverFactoryMap(receivers...)
-	//if err != nil {
-	//	errs = append(errs, err)
-	//}
 
 	return factories, componenterror.CombineErrors(errs)
 }
