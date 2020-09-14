@@ -29,8 +29,7 @@ on:
     types: [opened]    
 
 env:
-  IMAGE_NAMESPACE: josephwy
-  IMAGE_NAME: aws-observability-collector
+  IMAGE_NAME: aws-observability-collector-test
   PACKAGING_ROOT: build/packages
 
 jobs:
