@@ -287,7 +287,7 @@ jobs:
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}"
-          password: "${{ secrets.GITHUB_TOKEN }}"
+          password: "${{ secrets.CONTAINER_REGISTRY_TOKEN }}"
 
       - name: upload to dockerhub
         run: |
