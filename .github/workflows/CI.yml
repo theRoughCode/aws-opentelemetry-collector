@@ -283,17 +283,19 @@ jobs:
           opts: "-t=S3Release -s=build/packages/.aoc-stack-test.yml"
 
       - name: Login Dockerhub
-        uses: azure/docker-login@v1
+        uses: docker/login-action@v1
         with:
-          username: "${{ secrets.TEST_DOCKERHUB_USERNAME }}"
-          password: "${{ secrets.TEST_DOCKERHUB_PASSWORD }}"
+          registry: ghcr.io
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: upload to dockerhub
         run: |
           TAG=`cat build/packages/VERSION`
+          REPO_NAME="ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME"
           docker load < build/packages/$IMAGE_NAME.tar
-          docker tag $IMAGE_NAME $IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
-          docker push $IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
+          docker tag $IMAGE_NAME $REPO_NAME:$TAG
+          docker push $REPO_NAME:$TAG
 
   e2etest-ec2:
     strategy:
