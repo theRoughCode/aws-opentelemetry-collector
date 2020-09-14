@@ -217,7 +217,7 @@ jobs:
 
   release-to-github:
     runs-on: ubuntu-latest
-    needs: [s3-release-validation, image-release-validation-eks, image-release-validation-ecs, image-release-validation-fargate]
+    needs: [s3-release-validation, image-release-validation-ecs, image-release-validation-fargate]
     steps:
       - uses: actions/checkout@v2
      

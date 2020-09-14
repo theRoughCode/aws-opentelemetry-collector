@@ -408,7 +408,7 @@ jobs:
   release-candidate:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' # only create the artifact when there's a push, not for dispatch.
-    needs: [e2etest-ec2, e2etest-eks, e2etest-ecs, e2etest-fargate]
+    needs: [e2etest-ec2, e2etest-ecs, e2etest-fargate]
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
