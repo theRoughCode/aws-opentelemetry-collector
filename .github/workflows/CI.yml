@@ -29,8 +29,7 @@ on:
     types: [opened]    
 
 env:
-  IMAGE_NAME: aws-observability-collector-test
-  RELEASE_IMAGE_NAME: aws-observability-collector   
+  IMAGE_NAME: aws-observability-collector
   PACKAGING_ROOT: build/packages
 
 jobs:
@@ -292,7 +291,7 @@ jobs:
       - name: upload to dockerhub
         run: |
           TAG=`cat build/packages/VERSION`
-          REPO_NAME="ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME"
+          REPO_NAME="ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME-test"
           docker load < build/packages/$IMAGE_NAME.tar
           docker tag $IMAGE_NAME $REPO_NAME:$TAG
           docker push $REPO_NAME:$TAG
@@ -429,11 +428,6 @@ jobs:
           Version=`cat build/packages/VERSION | awk -F "-" '{print $1}'`
           echo $Version > build/packages/VERSION
           echo $GITHUB_SHA > build/packages/GITHUB_SHA
-
-      - name: place stack and change the image tar name
-        run: | 
-          cp build/packages/.aoc-stack-test.yml ./aoc-stack.yml
-          mv build/packages/$IMAGE_NAME.tar build/packages/$RELEASE_IMAGE_NAME.tar
 
       - name: upload packages as release candidate on s3
         uses: wyTrivail/aocintegtest@master
