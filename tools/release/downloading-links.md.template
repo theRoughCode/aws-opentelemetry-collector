@@ -19,6 +19,6 @@
 
 ## Docker
   
-  docker pull josephwy/awscollector:__VERSION__
+  docker pull ghcr.io/mxiamxia/aws-observability-collector:__VERSION__
 
 

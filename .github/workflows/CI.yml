@@ -29,8 +29,7 @@ on:
     types: [opened]    
 
 env:
-  IMAGE_NAMESPACE: josephwy
-  IMAGE_NAME: aws-observability-collector
+  IMAGE_NAME: aws-observability-collector-test
   PACKAGING_ROOT: build/packages
 
 jobs:
@@ -347,12 +346,38 @@ jobs:
       - name: place stack
         run: cp build/packages/.aoc-stack-test.yml ./.aoc-stack.yml
 
-      - name: perform integration test on EC2
+      - name: perform integration test on EC2 based ECS
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: integ-test
           opts: "-t=ECS_TEST -s=build/packages/.aoc-stack-test.yml -a=ECS_OPTIMIZED -e ecsLaunchType=EC2 -e ecsTaskDef=ECS_EC2_TEMPLATE"
 
+  e2etest-eks:
+    runs-on: ubuntu-latest
+    needs: [e2etest-release]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
+          aws-region: us-west-2
+
+      - name: restore cached rpms
+        uses: actions/cache@v2
+        with:
+          path: build/packages
+          key: "cached_packages_${{ github.run_id }}"
+
+      - name: place stack
+        run: cp build/packages/.aoc-stack-test.yml ./.aoc-stack.yml
+
+      - name: perform integration test on EKS    
+        uses: wyTrivail/aocintegtest@master
+        with:
+          running_type: integ-test
+          opts: "-t=EKS_TEST -k eksClusterName=aoc-test-eks-ec2"
+   
   e2etest-fargate:
     runs-on: ubuntu-latest
     needs: [e2etest-release]
@@ -373,7 +398,7 @@ jobs:
       - name: place stack
         run: cp build/packages/.aoc-stack-test.yml ./.aoc-stack.yml
 
-      - name: perform integration test on EC2
+      - name: perform integration test on fargate
         uses: wyTrivail/aocintegtest@master
         with:
           running_type: integ-test

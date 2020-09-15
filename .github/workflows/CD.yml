@@ -54,7 +54,6 @@ jobs:
 
       - name: cp stack into packages
         run: |
-          cp .aoc-stack-test.yml build/packages/
           cp .aoc-stack-release.yml build/packages/      
 
       - run: ls -R      
@@ -91,9 +90,36 @@ jobs:
           running_type: release
           opts: "-t=S3Release -s=build/packages/.aoc-stack-release.yml" 
 
-  release-to-dockerhub:
+  s3-release-validation:
+    strategy:
+      matrix:
+        ami: [AMAZON_LINUX, AMAZON_LINUX2, A1_AMAZON_LINUX, SUSE_15, SUSE_12, A1_SUSE_15, REDHAT_8, REDHAT_7, REDHAT_6, A1_REDHAT_8, A1_REDHAT_7, CENTOS_7, CENTOS_6, DEBIAN_10, DEBIAN_9, UBUNTU_18_04, UBUNTU_16_04, UBUNTU_14_04, A1_UBUNTU_18_04, A1_UBUNTU_16_04]
+
     runs-on: ubuntu-latest
-    needs: release-checking
+    needs: [release-to-s3]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
+          aws-region: us-west-2
+
+      - name: restore cached rpms
+        uses: actions/cache@v2
+        with:
+          path: build/packages
+          key: "${{ env.PACKAGE_CACHE_KEY }}"
+
+      - name: perform integration test on EC2
+        uses: wyTrivail/aocintegtest@master
+        with:
+          running_type: integ-test
+          opts: "-t=EC2_TEST -s=build/packages/.aoc-stack-release.yml -a=${{ matrix.ami }}"
+
+  release-to-github-container-registry:
+    runs-on: ubuntu-latest
+    needs: [s3-release-validation]
     steps:
       - name: Restore cached packages
         uses: actions/cache@v2
@@ -102,24 +128,96 @@ jobs:
           path: build/packages
 
       - name: Login Dockerhub
-        uses: azure/docker-login@v1
+        uses: docker/login-action@v1
         with:
-          username: "${{ secrets.TEST_DOCKERHUB_USERNAME }}"
-          password: "${{ secrets.TEST_DOCKERHUB_PASSWORD }}"
+          registry: ghcr.io
+          username: "${{ github.repository_owner }}"
+          password: "${{ secrets.CONTAINER_REGISTRY_TOKEN }}"
 
       - name: Push Image to dockerhub
         id: push-to-dockerhub
         run: |
           TAG=`cat build/packages/VERSION`
-          docker load < build/packages/awscollector.tar
-          docker tag $IMAGE_NAME $IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
-          docker tag $IMAGE_NAME $IMAGE_NAMESPACE/$IMAGE_NAME:latest
-          docker push $IMAGE_NAMESPACE/$IMAGE_NAME:$TAG
-          docker push $IMAGE_NAMESPACE/$IMAGE_NAME:latest
+          REPO_NAME="ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME"
+          docker load < build/packages/$IMAGE_NAME.tar
+          docker tag $IMAGE_NAME $REPO_NAME:$TAG
+          docker tag $IMAGE_NAME $REPO_NAME:latest
+          docker push $REPO_NAME:$TAG
+          docker push $REPO_NAME:latest
+
+          
+  image-release-validation-ecs:
+    runs-on: ubuntu-latest
+    needs: [release-to-github-container-registry]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
+          aws-region: us-west-2
+
+      - name: restore cached rpms
+        uses: actions/cache@v2
+        with:
+          path: build/packages
+          key: "${{ env.PACKAGE_CACHE_KEY }}"
+
+      - name: perform integration test on EC2 based ECS
+        uses: wyTrivail/aocintegtest@master
+        with:
+          running_type: integ-test
+          opts: "-t=ECS_TEST -s=build/packages/.aoc-stack-release.yml -a=ECS_OPTIMIZED -e ecsLaunchType=EC2 -e ecsTaskDef=ECS_EC2_TEMPLATE"
+
+  image-release-validation-fargate:
+    runs-on: ubuntu-latest
+    needs: [release-to-github-container-registry]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
+          aws-region: us-west-2
+
+      - name: restore cached rpms
+        uses: actions/cache@v2
+        with:
+          path: build/packages
+          key: "${{ env.PACKAGE_CACHE_KEY }}"
+
+      - name: perform integration test on fargate
+        uses: wyTrivail/aocintegtest@master
+        with:
+          running_type: integ-test
+          opts: "-t=ECS_TEST -s=build/packages/.aoc-stack-release.yml -e ecsLaunchType=FARGATE -e ecsTaskDef=ECS_FARGATE_TEMPLATE"
+
+  image-release-validation-eks:
+    runs-on: ubuntu-latest
+    needs: [release-to-github-container-registry]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
+          aws-region: us-west-2
+
+      - name: restore cached rpms
+        uses: actions/cache@v2
+        with:
+          path: build/packages
+          key: "${{ env.PACKAGE_CACHE_KEY }}"
+
+      - name: perform integration test on EKS    
+        uses: wyTrivail/aocintegtest@master
+        with:
+          running_type: integ-test
+          opts: "-t=EKS_TEST -s=build/packages/.aoc-stack-release.yml -k eksClusterName=aoc-test-eks-ec2"
 
   release-to-github:
     runs-on: ubuntu-latest
-    needs: [release-to-s3, release-to-dockerhub]
+    needs: [s3-release-validation, image-release-validation-ecs, image-release-validation-fargate]
     steps:
       - uses: actions/checkout@v2
      

@@ -6,10 +6,11 @@
 
 ### Overview
 
-AWS Observability Collector(AOC) is a certified OpenTelemetry Collector and distributed by Amazon. It supports the selected components from OpenTelemetry community and fully compatible with AWS computing platforms including EC2, ECS and EKS. It will send telemetry data to AWS CloudWatch Metrics, Traces and Logs backends as well as the other backends we have claimed to support with verification. 
+AWS Observability Collector(AOC) is a certified OpenTelemetry Collector and distributed by Amazon. It supports the selected components from the OpenTelemetry community and is fully compatible with AWS computing platforms including EC2, ECS and EKS. It will send telemetry data to AWS CloudWatch Metrics, Traces and Logs backends as well as the other backends we have claimed to support with verification.
+
 ### Getting Help
 
-Use the following community resources for getting help with AWS Observability Collector. We use the GitHub issues for tracking bugs and feature requests.
+Use the community resources below for getting help with AWS Observability Collector. We use [GitHub issues](https://github.com/mxiamxia/aws-opentelemetry-collector/issues) for tracking bugs and feature requests.
 
 * Ask a question in [AWS CloudWatch Forum](https://forums.aws.amazon.com/forum.jspa?forumID=138).
 * Open a support ticket with [AWS Support](http://docs.aws.amazon.com/awssupport/latest/user/getting-started.html).
@@ -18,7 +19,7 @@ Use the following community resources for getting help with AWS Observability Co
 
 #### AOC Built-in Components (in 2020)
 
-This table represents the supported components of AWS observability collector in 2020. The highlighted components below are developed by AWS in-house. The rest of components in the table are the essential default components  AOC will be supported.
+This table represents the supported components of AWS observability collector in 2020. The highlighted components below are developed by AWS in-house. The rest of the components in the table are the essential default components that AOC will support.
  
 | Receiver             | Processor                     | Exporter           | Extensions             |
 |----------------------|-------------------------------|--------------------|------------------------|
@@ -39,13 +40,16 @@ This table represents the supported components of AWS observability collector in
 * More coming
 
 ### Getting Started
+#### Prerequisites
+To build AOC locally, you will need to have Golang installed. You can download and install Golang [here](https://golang.org/doc/install).
+
 #### Build Your Own Artifacts
-Use the following instruction to build your own AOC artifacts.
+Use the following instruction to build your own AOC artifacts:
 * [Build Docker Image](docs/developers/build-docker.md)
 * [Build RPM/Deb/MSI](docs/developers/build-aoc.md)
 
 #### Try out AOC Beta
-AOC supports all AWS computing platforms and docker/kubernetes. We provided some examples on how to run AOC to send telemetry data.
+AOC supports all AWS computing platforms and docker/kubernetes. Here are some examples on how to run AOC to send telemetry data:
 * [Run it with Docker](docs/developers/docker-demo.md)
 * [Run it with ECS/EKS](docs/developers/emf-demo.md)
 * [Run it on AWS Linux EC2](docs/developers/linux-rpm-demo.md)
@@ -59,7 +63,7 @@ AOC supports all AWS computing platforms and docker/kubernetes. We provided some
 
 aws-observability-collector is based on open-telemetry-collector. Here is the benchmark of AWSXray trace exporter and AWSEMF metrics exporter.
 
-This table shows the performance of AWSEMF exporter  against 1kData/sec,5kData/sec and 10kData/sec metrics
+This table shows the performance of AWSEMF exporter against 1kData/sec, 5kData/sec, and 10kData/sec metrics:
 
 | Test                | Result | Duration | CPU Avg% | CPU Max% | RAM Avg MiB | RAM Max MiB | Sent Items | Received Items |
 |---------------------|--------|----------|----------|----------|-------------|-------------|------------|----------------|
