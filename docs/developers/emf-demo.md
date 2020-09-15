@@ -42,9 +42,11 @@ The following two examples are provided to run AWS-Observability-Collector as si
 
 **ECS Fargate**  
 Notice that in the task definition templates we provided, you have to fill ```{{aocImage}}``` with the aoc docker image you created. Replace ```{{region}}``` with the region your want to send the data to. Fill ```{{ecsTaskRoleArn}}``` and ```{{ecsExecutionRoleArn}}``` with the IAM role(```ECS-AWSObservability```) you created above.
-You can find ECS Fargate AOC [Installing template](https://github.com/wyTrivail/aocintegtest/blob/master/src/main/resources/templates/ecs/aoc-sidecar-fargate.mustache).
+You can find ECS Fargate AOC [Installing template](https://github.com/mxiamxia/aws-opentelemetry-collector/blob/master/examples/ecs/ecs-fargate-sidecar.json).
 
 **ECS EC2**  
 Another example is installing AOC on ECS EC2 instance as sidecar to send telemetry data.
-You can find ECS EC2 AOC [Installing template](https://github.com/wyTrivail/aocintegtest/blob/master/src/main/resources/templates/ecs/aoc-sidecar-fargate.mustache).
+You can find ECS EC2 AOC [Installing template](https://github.com/mxiamxia/aws-opentelemetry-collector/blob/master/examples/ecs/ecs-ec2-sidecar.json).
 
+#### Install AOC on Amazon EKS as sidecar
+[todo]

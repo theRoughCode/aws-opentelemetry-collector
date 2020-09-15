@@ -16,6 +16,7 @@
 package logger
 
 import (
+	"aws-observability.io/collector/pkg/consts"
 	"fmt"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -26,10 +27,6 @@ import (
 	"runtime"
 )
 
-var (
-	winLogfilePath   = "C:\\ProgramData\\Amazon\\AwsOpentelemetryCollector\\Logs\\aws-observability-collector.log"
-	linuxLogfilePath = "/opt/aws/aws-observability-collector/logs/aws-observability-collector.log"
-)
 var logfile = getLogFilePath()
 
 var lumberjackLogger = &lumberjack.Logger{
@@ -74,8 +71,8 @@ func SetupErrorLogger() {
 //this method retuns the log file path depending on the OS
 func getLogFilePath() string {
 	if runtime.GOOS == "windows" {
-		return winLogfilePath
+		return consts.WIN_LOGFILE_PATH
 	} else {
-		return linuxLogfilePath
+		return consts.LINUX_LOGFILE_PATH
 	}
 }
