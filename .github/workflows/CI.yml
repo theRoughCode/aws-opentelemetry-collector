@@ -30,6 +30,7 @@ on:
 
 env:
   IMAGE_NAME: aws-observability-collector-test
+  RELEASE_IMAGE_NAME: aws-observability-collector   
   PACKAGING_ROOT: build/packages
 
 jobs:
@@ -429,8 +430,10 @@ jobs:
           echo $Version > build/packages/VERSION
           echo $GITHUB_SHA > build/packages/GITHUB_SHA
 
-      - name: place stack
-        run: cp build/packages/.aoc-stack-test.yml ./aoc-stack.yml
+      - name: place stack and change the image tar name
+        run: | 
+          cp build/packages/.aoc-stack-test.yml ./aoc-stack.yml
+          mv build/packages/$IMAGE_NAME.tar build/packages/$RELEASE_IMAGE_NAME.tar
 
       - name: upload packages as release candidate on s3
         uses: wyTrivail/aocintegtest@master
