@@ -41,12 +41,10 @@ func Components() (component.Factories, error) {
 	for k := range factories.Receivers {
 		delete(factories.Receivers, k)
 	}
-
 	receivers := []component.ReceiverFactoryBase{
 		&prometheusreceiver.Factory{},
 		otlpreceiver.NewFactory(),
 	}
-
 	factories.Receivers, err = component.MakeReceiverFactoryMap(receivers...)
 	if err != nil {
 		errs = append(errs, err)
@@ -56,7 +54,6 @@ func Components() (component.Factories, error) {
 	for k := range factories.Exporters {
 		delete(factories.Exporters, k)
 	}
-
 	exporters := []component.ExporterFactoryBase{
 		awsxrayexporter.NewFactory(),
 		&awsemfexporter.Factory{},
