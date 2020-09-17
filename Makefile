@@ -28,7 +28,7 @@ GOBUILD=GO111MODULE=on CGO_ENABLED=0 installsuffix=cgo go build -trimpath
 LDFLAGS=-ldflags "-s -w -X $(BUILD_INFO_IMPORT_PATH).GitHash=$(GIT_SHA) -X $(BUILD_INFO_IMPORT_PATH).Version=$(VERSION) -X $(BUILD_INFO_IMPORT_PATH).Date=$(DATE)"
 GOOS=$(shell go env GOOS)
 GOARCH=$(shell go env GOARCH)
-DOCKER_NAMESPACE = aoc
+DOCKER_NAMESPACE = amazon
 COMPONENT=awscollector
 LINT=golangci-lint
 STATIC_CHECK=staticcheck
@@ -54,10 +54,6 @@ package-rpm: build
 package-deb: build
 	ARCH=amd64 TARGET_SUPPORTED_ARCH=x86_64 DEST=build/packages/debian/amd64 tools/packaging/debian/create_deb.sh
 	ARCH=arm64 TARGET_SUPPORTED_ARCH=aarch64 DEST=build/packages/debian/arm64 tools/packaging/debian/create_deb.sh
-
-.PHONY: push-docker
-push-docker:
-	docker push mxiamxia/aws-aoc:$(VERSION)
 
 .PHONY: docker-component # Not intended to be used directly
 docker-component: check-component

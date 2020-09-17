@@ -18,6 +18,7 @@ receivers:
 
 processors:
   batch:
+    timeout: 30s
   queued_retry:
 
 exporters:
@@ -38,6 +39,7 @@ service:
       exporters: [awsxray]
     metrics:
       receivers: [otlp]
+      processors: [batch]
       exporters: [awsemf]
 
     metrics/2:
