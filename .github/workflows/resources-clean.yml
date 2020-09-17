@@ -46,4 +46,10 @@ jobs:
       with:
         running_type: clean
         opts: "-t=ECSClean -s=.aoc-stack-test.yml"
+
+    - name: Clean old eks namespace
+      uses: wyTrivail/aocintegtest@master
+      with:
+        running_type: clean
+        opts: "-t=EKSClean -s=.aoc-stack-test.yml -k eksClusterName=aoc-test-eks-ec2"      
  
