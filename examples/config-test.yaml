@@ -1,5 +1,7 @@
 extensions:
   health_check:
+  pprof:
+    endpoint: 0.0.0.0:1777
 
 receivers:
   otlp:
@@ -9,7 +11,6 @@ receivers:
 
 processors:
   batch:
-    timeout: 30s
   queued_retry:
 
 exporters:
@@ -26,10 +27,9 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [awsxray]
+      exporters: [awsxray, logging]
     metrics:
       receivers: [otlp]
-      processors: [batch, queued_retry]
-      exporters: [awsemf]
+      exporters: [awsemf, logging]
 
-  extensions: [health_check]
+  extensions: [pprof]
